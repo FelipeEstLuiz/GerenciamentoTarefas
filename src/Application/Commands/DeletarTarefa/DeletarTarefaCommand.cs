@@ -1,6 +1,5 @@
-﻿using Application.Model;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Commands.DeletarTarefa;
 
-public record DeletarTarefaCommand(int Id) : IRequest<Result<string>>;
+public record DeletarTarefaCommand(int Id) : IRequest<string>;

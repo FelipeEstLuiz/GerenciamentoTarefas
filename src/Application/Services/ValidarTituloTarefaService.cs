@@ -6,7 +6,7 @@ namespace Application.Services;
 
 public class ValidarTituloTarefaService(ITarefaRepository tarefaRepository) : IValidarTituloTarefaService
 {
-    public async Task ExisteTarefaComMesmoTituloNaoConcluidaDeOutroIdAsync(
+    public async Task NaoExisteTarefaComMesmoTituloNaoConcluidaDeOutroIdOrThrowAsync(
         int id,
         string titulo,
         CancellationToken cancellationToken
@@ -16,7 +16,7 @@ public class ValidarTituloTarefaService(ITarefaRepository tarefaRepository) : IV
         cancellationToken
     ));
 
-    public async Task ExisteTarefaComMesmoTituloNaoConcluidaAsync(
+    public async Task NaoExisteTarefaComMesmoTituloNaoConcluidaOrThrowAsync(
         string titulo,
         CancellationToken cancellationToken
     ) => ThrowIfExists(await tarefaRepository.ExisteTarefaComMesmoTituloNaoConcluidaAsync(

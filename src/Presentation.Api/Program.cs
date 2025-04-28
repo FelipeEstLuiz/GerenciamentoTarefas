@@ -28,6 +28,7 @@ builder.Services.ConfigureExtensions();
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 builder.Services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
 builder.Services.AddScoped<IValidarTituloTarefaService, ValidarTituloTarefaService>();
+builder.Services.AddScoped<IObterTarefaService, ObterTarefaService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -48,7 +49,7 @@ builder.Services.AddSwaggerGen();
 WebApplication app = builder.Build();
 
 if (!app.Environment.IsProduction())
-    DatabaseInitializer.InitializeAsync(builder.Configuration.GetConnectionString("Default")!).GetAwaiter().GetResult();
+    DatabaseInitializer.InitializeAsync(builder.Configuration.GetConnectionString("DefaultConnection")!).GetAwaiter().GetResult();
 
 if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();

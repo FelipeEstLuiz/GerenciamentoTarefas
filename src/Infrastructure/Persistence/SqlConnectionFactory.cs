@@ -11,8 +11,8 @@ public class SqlConnectionFactory : IDbConnectionFactory
 
     public SqlConnectionFactory(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("Default")
-            ?? throw new ArgumentNullException(nameof(_connectionString), "Connection string 'Default' not found.");
+        _connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? throw new ArgumentNullException(nameof(_connectionString), "Connection string 'DefaultConnection' not found.");
     }
 
     public IDbConnection CreateConnection() => new SqlConnection(_connectionString);

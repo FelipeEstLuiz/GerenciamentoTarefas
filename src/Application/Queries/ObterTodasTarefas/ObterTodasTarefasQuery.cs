@@ -1,7 +1,6 @@
 ﻿using Application.DTOs;
-using Application.Model;
 using MediatR;
 
 namespace Application.Queries.ObterTodasTarefas;
 
-public record ObterTodasTarefasQuery : IRequest<Result<IEnumerable<TarefaDto>>>;
+public record ObterTodasTarefasQuery(int Page, int Limit) : IRequest<ServerSideDto<IEnumerable<TarefaListagemDto>>>;

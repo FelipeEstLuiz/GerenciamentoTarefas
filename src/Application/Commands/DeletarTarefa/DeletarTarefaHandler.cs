@@ -1,19 +1,20 @@
-﻿using Application.Model;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Repositories;
+using Domain.Services;
 using MediatR;
-using System.Net;
 
 namespace Application.Commands.DeletarTarefa;
 
-public class DeletarTarefaHandler(ITarefaRepository tarefaRepository) : IRequestHandler<DeletarTarefaCommand, Result<string>>
+public class DeletarTarefaHandler(
+    ITarefaRepository tarefaRepository,
+    IObterTarefaService obterTarefaService
+) : IRequestHandler<DeletarTarefaCommand, string>
 {
-    public async Task<Result<string>> Handle(DeletarTarefaCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(DeletarTarefaCommand request, CancellationToken cancellationToken)
     {
-        Tarefa tarefa = await tarefaRepository.GetByIdAsync(request.Id, cancellationToken)
-            ?? throw new ValidacaoException("Tarefa não encontrada", HttpStatusCode.NotFound);
+        Tarefa tarefa = await obterTarefaService.ObterTarefaPorIdOrThrow(request.Id, cancellationToken);
 
         ValidacaoException.When(
             tarefa.CodigoStatusTarefa != StatusTarefa.Pendente,
@@ -22,6 +23,6 @@ public class DeletarTarefaHandler(ITarefaRepository tarefaRepository) : IRequest
 
         await tarefaRepository.DeleteAsync(request.Id, cancellationToken);
 
-        return Result<string>.Success("Tarefa removida com sucesso");
+        return "Tarefa removida com sucesso";
     }
 }

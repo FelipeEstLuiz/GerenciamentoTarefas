@@ -11,26 +11,26 @@ using System.Net;
 
 namespace Presentation.Api.V1.Controller.Application;
 
-[ApiExplorerSettings(GroupName = "Tarefa")]
-public class TarefaController(IMediator mediator) : BaseApplicationController
+[ApiExplorerSettings(GroupName = "Tarefas")]
+public class TarefasController(IMediator mediator) : BaseApplicationController
 {
     [HttpPost]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<TarefaDto>))]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TarefaDto))]
     public async Task<IActionResult> Post([FromBody] CriarTarefaCommand command)
        => HandlerResponse(HttpStatusCode.Created, await mediator.Send(command));
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<TarefaDto>))]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TarefaDto))]
     public async Task<IActionResult> Get(int id)
       => HandlerResponse(HttpStatusCode.OK, await mediator.Send(new ObterTarefaPorIdQuery(id)));
 
     [HttpGet]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<IEnumerable<TarefaDto>>))]
-    public async Task<IActionResult> GetAll()
-        => HandlerResponse(HttpStatusCode.OK, await mediator.Send(new ObterTodasTarefasQuery()));
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ServerSideDto<IEnumerable<TarefaListagemDto>>))]
+    public async Task<IActionResult> GetAll(int page = 1, int limit = 5)
+        => HandlerResponse(HttpStatusCode.OK, await mediator.Send(new ObterTodasTarefasQuery(page, limit)));
 
     [HttpPut("{id:int}")]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<TarefaDto>))]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TarefaDto))]
     public async Task<IActionResult> Update(int id, [FromBody] AtualizarTarefaCommand comand)
     {
         comand.Id = id;
@@ -38,7 +38,7 @@ public class TarefaController(IMediator mediator) : BaseApplicationController
     }
 
     [HttpDelete("{id:int}")]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Response<string>))]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string))]
     public async Task<IActionResult> Delete(int id)
         => HandlerResponse(HttpStatusCode.OK, await mediator.Send(new DeletarTarefaCommand(id)));
 }

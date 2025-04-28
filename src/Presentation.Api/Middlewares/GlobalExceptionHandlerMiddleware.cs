@@ -1,6 +1,5 @@
 ﻿using Domain.Exceptions;
 using Newtonsoft.Json;
-using Presentation.Api.Controllers._Shared;
 using System.Net;
 
 namespace Presentation.Api.Middlewares;
@@ -57,6 +56,6 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
             Formatting = Formatting.Indented
         };
 
-        await context.Response.WriteAsync(JsonConvert.SerializeObject(Response.Failure(erros), settings));
+        await context.Response.WriteAsync(JsonConvert.SerializeObject(erros, settings));
     }
 }

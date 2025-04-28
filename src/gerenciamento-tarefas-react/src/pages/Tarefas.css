@@ -1,0 +1,136 @@
+.tarefas-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .tarefas-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+    color: #333;
+  }
+  
+  .rdtd {
+    width: 100% !important;
+  }
+  
+  .data-table-extensions > div {
+    width: 100%;
+  }
+  
+  .dataTable {
+    width: 100%;
+  }
+  
+  .page-container {
+    padding: 60px;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+  
+  .data-table-container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .data-table-container .rdt_Table {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .data-table-container .rdt_TableBody {
+    flex: 1 1 auto;
+    height: 100%;
+  }
+  
+  .ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ReactModal__Content {
+    position: relative !important;;
+    inset: auto;
+    border: 1px solid #ccc;
+    background: rgba(0, 0, 0, 0.75) !important;;
+    overflow: auto;
+    border-radius: 10px;
+    outline: none;
+    padding: 30px;
+    width: 400px;
+    text-align: center;
+    transform: none;
+  }
+  
+  /* Selecione o container .ciJhsa e defina flex para o conteúdo */
+.ciJhsa {
+  display: flex;
+  flex-grow: 1 !important;
+  flex-wrap: wrap; /* Permite que os itens se ajustem em várias linhas, se necessário */
+  gap: 10px; /* Adiciona espaçamento entre os elementos */
+  justify-content: flex-start; /* Alinha os itens à esquerda */
+  overflow: hidden; /* Impede o overflow de elementos fora da tela */
+  flex-basis: 1 !important;
+}
+
+.botao-acao {
+  min-width: 120px;
+  white-space: nowrap;
+  padding: 8px 12px;
+  font-size: 14px;
+  flex: 0 0 auto;
+  display: inline-block;
+  margin: 4px;
+}
+
+.botao-acao-cancelar {
+  background: 'blue';
+  color: 'white'
+}
+
+.is-invalid {
+  border: 1px solid red;
+}
+
+.invalid-feedback {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Animação no fundo (overlay) */
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+/* Animação no conteúdo (modal) */
+.ReactModal__Content {
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+}
+
+.ReactModal__Content--after-open {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.ReactModal__Content--before-close {
+  transform: scale(0.95);
+  opacity: 0;
+}

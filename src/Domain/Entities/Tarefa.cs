@@ -18,7 +18,7 @@ public class Tarefa
         DateTime? dataConclusao
     )
     {
-        ValidacaoException.When(id < 0, "Id inválido");
+        ValidacaoException.When(id <= 0, "Id inválido");
         ValidateDomain(titulo, descricao);
 
         ValidacaoException.When(
@@ -87,8 +87,8 @@ public class Tarefa
     private void ValidateDomain(string titulo, string? descricao)
     {
         ValidacaoException.When(string.IsNullOrEmpty(titulo), "Título é obrigatorio");
-        ValidacaoException.When(titulo.Length > 100, "Título deve conter no máximo 100 caracter");
-        ValidacaoException.When(descricao is not null && descricao.Length > 500, "Título deve conter no máximo 500 caracter");
+        ValidacaoException.When(titulo.Length > 100, "Título deve conter no máximo 100 caracteres");
+        ValidacaoException.When(descricao is not null && descricao.Length > 500, "Descrição deve conter no máximo 500 caracteres");
 
         Titulo = titulo;
         Descricao = descricao;

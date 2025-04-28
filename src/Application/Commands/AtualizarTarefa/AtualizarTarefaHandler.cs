@@ -1,31 +1,27 @@
 ﻿using Application.DTOs;
-using Application.Model;
 using Domain.Entities;
-using Domain.Enums;
-using Domain.Exceptions;
 using Domain.Repositories;
 using Domain.Services;
 using MediatR;
-using System.Net;
 
 namespace Application.Commands.AtualizarTarefa;
 
 public class AtualizarTarefaHandler(
     ITarefaRepository tarefaRepository,
+    IObterTarefaService obterTarefaService,
     IValidarTituloTarefaService validarTituloTarefaService
 )
-    : IRequestHandler<AtualizarTarefaCommand, Result<TarefaDto>>
+    : IRequestHandler<AtualizarTarefaCommand, TarefaDto>
 {
-    public async Task<Result<TarefaDto>> Handle(AtualizarTarefaCommand request, CancellationToken cancellationToken)
+    public async Task<TarefaDto> Handle(AtualizarTarefaCommand request, CancellationToken cancellationToken)
     {
-        await validarTituloTarefaService.ExisteTarefaComMesmoTituloNaoConcluidaDeOutroIdAsync(
+        await validarTituloTarefaService.NaoExisteTarefaComMesmoTituloNaoConcluidaDeOutroIdOrThrowAsync(
             request.Id!.Value,
             request.Titulo!,
             cancellationToken
         );
 
-        Tarefa tarefa = await tarefaRepository.GetByIdAsync(request.Id!.Value, cancellationToken)
-            ?? throw new ValidacaoException("Tarefa não encontrada", HttpStatusCode.NotFound);
+        Tarefa tarefa = await obterTarefaService.ObterTarefaPorIdOrThrow(request.Id!.Value, cancellationToken);
 
         tarefa.Update(
             request.Titulo!,

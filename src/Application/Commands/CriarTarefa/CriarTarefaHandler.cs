@@ -1,5 +1,4 @@
 ﻿using Application.DTOs;
-using Application.Model;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
@@ -10,11 +9,11 @@ namespace Application.Commands.CriarTarefa;
 public class CriarTarefaHandler(
     ITarefaRepository tarefaRepository,
     IValidarTituloTarefaService validarTituloTarefaService
-) : IRequestHandler<CriarTarefaCommand, Result<TarefaDto>>
+) : IRequestHandler<CriarTarefaCommand, TarefaDto>
 {
-    public async Task<Result<TarefaDto>> Handle(CriarTarefaCommand request, CancellationToken cancellationToken)
+    public async Task<TarefaDto> Handle(CriarTarefaCommand request, CancellationToken cancellationToken)
     {
-        await validarTituloTarefaService.ExisteTarefaComMesmoTituloNaoConcluidaAsync(
+        await validarTituloTarefaService.NaoExisteTarefaComMesmoTituloNaoConcluidaOrThrowAsync(
             request.Titulo!,
             cancellationToken
         );

@@ -2,12 +2,12 @@
 
 public interface IValidarTituloTarefaService
 {
-    Task ExisteTarefaComMesmoTituloNaoConcluidaDeOutroIdAsync(
+    Task NaoExisteTarefaComMesmoTituloNaoConcluidaDeOutroIdOrThrowAsync(
         int id,
         string titulo,
         CancellationToken cancellationToken
     );
-    Task ExisteTarefaComMesmoTituloNaoConcluidaAsync(
+    Task NaoExisteTarefaComMesmoTituloNaoConcluidaOrThrowAsync(
         string titulo,
         CancellationToken cancellationToken
     );

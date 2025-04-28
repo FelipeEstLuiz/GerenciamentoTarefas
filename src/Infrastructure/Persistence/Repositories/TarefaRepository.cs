@@ -43,29 +43,50 @@ public class TarefaRepository(IDbConnectionFactory dbConnection, ILogger<TarefaR
         }
     }
 
-    public async Task<IEnumerable<Tarefa>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<ServerSide<IEnumerable<Tarefa>>> GetAllAsync(
+        int page,
+        int limit,
+        CancellationToken cancellationToken
+    )
     {
         const string sql = @"
-            SELECT 
-                Id,
-                Titulo,
-                Descricao,
-                CodigoStatusTarefa,
-                DataCriacao,
-                DataConclusao
-            FROM Tarefa
+                SELECT 
+                    Id,
+                    Titulo,
+                    Descricao,
+                    CodigoStatusTarefa,
+                    DataCriacao,
+                    DataConclusao
+                FROM Tarefa
+                ORDER BY Id DESC
+                OFFSET @Offset ROWS
+                FETCH NEXT @Limit ROWS ONLY;
+
+                SELECT COUNT(1) FROM Tarefa;
         ";
 
         try
         {
             using IDbConnection conn = dbConnection.CreateConnection();
 
-            return await conn.QueryAsync<Tarefa>(new CommandDefinition(
+            using SqlMapper.GridReader multi = await conn.QueryMultipleAsync(new CommandDefinition(
                 sql,
+                new
+                {
+                    Offset = page == 0 ? page : page - 1,
+                    Limit = limit
+                },
                 commandType: CommandType.Text,
                 commandTimeout: 0,
                 cancellationToken: cancellationToken
             ));
+
+            ServerSide<IEnumerable<Tarefa>> serverSide = new(
+                await multi.ReadAsync<Tarefa>(),
+                await multi.ReadSingleAsync<int>()
+            );
+            return serverSide;
+
         }
         catch (Exception ex)
         {

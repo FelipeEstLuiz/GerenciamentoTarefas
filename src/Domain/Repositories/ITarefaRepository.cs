@@ -14,5 +14,9 @@ public interface ITarefaRepository
     );
     Task<Tarefa> UpdateAsync(Tarefa tarefa, CancellationToken cancellationToken);
     Task<Tarefa> AddAsync(Tarefa tarefa, CancellationToken cancellationToken);
-    Task<IEnumerable<Tarefa>> GetAllAsync(CancellationToken cancellationToken);
+    Task<ServerSide<IEnumerable<Tarefa>>> GetAllAsync(
+        int page,
+        int limit, 
+        CancellationToken cancellationToken
+    );
 }
