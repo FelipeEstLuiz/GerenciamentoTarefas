@@ -73,7 +73,7 @@ public class TarefaRepository(IDbConnectionFactory dbConnection, ILogger<TarefaR
                 sql,
                 new
                 {
-                    Offset = page == 0 ? page : page - 1,
+                    Offset = page == 0 ? page : limit * (page - 1),
                     Limit = limit
                 },
                 commandType: CommandType.Text,

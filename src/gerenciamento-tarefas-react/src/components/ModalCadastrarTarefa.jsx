@@ -63,7 +63,6 @@ export default function ModalCadastrarTarefa({ isOpen, onClose, fetchTarefas }) 
 
             navigate('/tarefas');
         } catch (error) {
-            console.error("Erro ao cadastrar", error);
 
             const mensagens = error.response?.data;
 
@@ -112,7 +111,6 @@ export default function ModalCadastrarTarefa({ isOpen, onClose, fetchTarefas }) 
                         value={titulo}
                         onChange={(e) => setTitulo(e.target.value)}
                         style={{ width: '100%' }}
-                        maxLength={100}
                     />
                     {erros.titulo && <div className="invalid-feedback">{erros.titulo}</div>}
 
@@ -121,7 +119,6 @@ export default function ModalCadastrarTarefa({ isOpen, onClose, fetchTarefas }) 
                         value={descricao}
                         onChange={(e) => setDescricao(e.target.value)}
                         style={{ width: '100%', marginTop: '10px' }}
-                        maxLength={500}
                         rows="9"
                     />
                     {erros.descricao && <div className="invalid-feedback">{erros.descricao}</div>}

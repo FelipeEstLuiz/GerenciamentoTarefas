@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function EditarTarefa() {
     const { id } = useParams();
@@ -82,13 +82,21 @@ export default function EditarTarefa() {
             toast.success('Tarefa atualizada com sucesso!');
             navigate('/tarefas');
         } catch (error) {
-            console.error('Erro ao atualizar tarefa', error);
-            toast.error('Erro ao atualizar tarefa.');
+           const mensagens = error.response?.data;
+           
+            if (Array.isArray(mensagens)) {
+                toast.error(mensagens.join(", "));
+            } else if (typeof mensagens === "string") {
+                toast.error(mensagens);
+            } else {
+                toast.error("Erro ao atualizar tarefa.");
+            }
         }
     };
 
     return (
         <div style={{ padding: '70px 50px' }}>
+            <ToastContainer />
             <h2>Editar Tarefa</h2>
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '15px' }}>
@@ -116,7 +124,6 @@ export default function EditarTarefa() {
                                 onChange={(e) => setTitulo(e.target.value)}
                                 className={`form-control ${erros.titulo ? 'is-invalid' : ''}`}
                                 style={{ width: '100%' }}
-                                maxLength={100}
                             />
                             {erros.titulo && <div className="invalid-feedback">{erros.titulo}</div>}
                         </div>
@@ -129,7 +136,6 @@ export default function EditarTarefa() {
                             onChange={(e) => setDescricao(e.target.value)}
                             className={`form-control ${erros.descricao ? 'is-invalid' : ''}`}
                             style={{ width: '100%', padding: '10px' }}
-                            maxLength={500}
                             rows={5}
                         />
                         {erros.descricao && <div className="invalid-feedback">{erros.descricao}</div>}

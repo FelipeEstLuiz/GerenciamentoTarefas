@@ -1,6 +1,8 @@
 ﻿using Domain.Exceptions;
+using Domain.Extension;
 using Newtonsoft.Json;
 using System.Net;
+using System.Text;
 
 namespace Presentation.Api.Middlewares;
 
@@ -18,7 +20,7 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
         HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest;
@@ -28,8 +30,28 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
         {
             foreach (FluentValidation.Results.ValidationFailure failure in validationException.Errors)
             {
-                string message = $"{failure.PropertyName} | {failure.ErrorMessage} | Valor: {failure.AttemptedValue}";
-                erros = [.. erros, message];
+                StringBuilder message = new StringBuilder()
+                    .Append($"{failure.PropertyName}")
+                    .Append(" | ")
+                    .Append($"{failure.ErrorMessage}")
+                    .Append(" | ")
+                    .Append("Valor: ");
+
+                try
+                {
+                    string? enumName = failure.AttemptedValue is Enum enumValue
+                        ? enumValue.GetEnumName()
+                        : null;
+
+                    if (enumName is not null) message.Append(enumName);
+                    else message.Append($"{failure.AttemptedValue}");
+                }
+                catch (Exception)
+                {
+                    message.Append($"{failure.AttemptedValue}");
+                }
+
+                erros = [.. erros, message.ToString()];
             }
         }
         else if (exception is UnauthorizedAccessException)
